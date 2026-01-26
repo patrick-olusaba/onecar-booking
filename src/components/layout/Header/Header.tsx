@@ -1,19 +1,21 @@
-import React from "react";
 import { Link } from "react-router-dom";
+import logo from "../../../assets/images/brand/luxetransfers.png";
 
-const Header: React.FC = () => {
+const Header = () => {
     return (
         <header className="lux-header">
             <div className="lux-header-inner">
-                {/* Logo */}
-                <Link to="/" className="lux-logo">
-                    LUXE<span>Transfers</span>
+                <Link to="/">
+                    <img
+                        src={logo}
+                        alt="Luxe Transfers"
+                        className="lux-logo-img"
+                    />
                 </Link>
 
-                {/* Navigation */}
                 <nav className="lux-nav">
-                    <Link to="/#vehicle">Vehicle</Link>
-                    <Link to="/#booking">Book</Link>
+                    <Link to="/vehicle">Vehicle</Link>
+                    <Link to="/booking">Book</Link>
                     <Link to="/blog">Blog</Link>
                     <Link to="/contact" className="lux-cta">
                         Contact

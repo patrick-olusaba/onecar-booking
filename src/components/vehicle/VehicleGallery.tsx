@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { vehicle } from "../../data/vehicle";
-import "../../styles/globals.css";
-// import img1 from "../../assets/images/car/img2.jpeg"
 
 const VehicleGallery: React.FC = () => {
     const [activeImage, setActiveImage] = useState<string | null>(null);
 
-    if (!vehicle.gallery || vehicle.gallery.length === 0) return null;
+    if (!vehicle.gallery?.length) return null;
 
     return (
         <section className="vehicle-gallery">
@@ -16,22 +14,24 @@ const VehicleGallery: React.FC = () => {
             </div>
 
             <div className="gallery-grid">
-                {vehicle.gallery.map((img, index) => (
+                {vehicle.gallery.map((img: string, index: number) => (
                     <button
                         key={index}
                         className="gallery-item"
                         onClick={() => setActiveImage(img)}
                         style={{ animationDelay: `${index * 0.08}s` }}
                     >
-                        <img src={img} alt={`Vehicle view ${index + 1}`} />
-
+                        <img src={img} alt={`Vehicle ${index + 1}`} />
                     </button>
                 ))}
             </div>
 
             {activeImage && (
-                <div className="gallery-modal" onClick={() => setActiveImage(null)}>
-                    <img src={activeImage} alt="Vehicle full view" />
+                <div
+                    className="gallery-modal"
+                    onClick={() => setActiveImage(null)}
+                >
+                    <img src={activeImage} alt="Vehicle large view" />
                 </div>
             )}
         </section>

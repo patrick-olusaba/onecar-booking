@@ -1,57 +1,41 @@
-import VehicleSpecs from "../components/vehicle/VehicleSpecs";
-import carExterior from "../assets/images/car/exterior.jpg";
-import carInterior from "../assets/images/car/interior.jpg";
-import seatsImg from "../assets/images/car/seats.jpg";
+import React from "react";
 
-const VehicleDetails = () => {
+interface VehicleSpecsProps {
+    seats: number;
+    luggage: number;
+    transmission: string;
+    fuel: string;
+}
+
+const VehicleSpecs: React.FC<VehicleSpecsProps> = ({
+                                                       seats,
+                                                       luggage,
+                                                       transmission,
+                                                       fuel,
+                                                   }) => {
     return (
-        <section className="vehicle-details-page">
-
-            {/* HERO */}
-            <div className="vehicle-details-hero">
-                <h1>Mercedes-Benz A-Class</h1>
-                <p>Luxury Chauffeur Vehicle</p>
+        <div className="vehicle-specs-grid">
+            <div className="spec-item">
+                <span>Seats</span>
+                <strong>{seats}</strong>
             </div>
 
-            {/* EXTERIOR */}
-            <div className="vehicle-section">
-                <img src={carExterior} />
-                <div>
-                    <h2>Exterior Design</h2>
-                    <p>
-                        Sleek aerodynamic body, LED headlights, premium paint finish and
-                        signature Mercedes grille.
-                    </p>
-                </div>
+            <div className="spec-item">
+                <span>Luggage</span>
+                <strong>{luggage}</strong>
             </div>
 
-            {/* INTERIOR */}
-            <div className="vehicle-section reverse">
-                <img src={carInterior} />
-                <div>
-                    <h2>Interior Comfort</h2>
-                    <p>
-                        Leather upholstery, ambient lighting, climate control and premium trim.
-                    </p>
-                </div>
+            <div className="spec-item">
+                <span>Transmission</span>
+                <strong>{transmission}</strong>
             </div>
 
-            {/* SEATS */}
-            <div className="vehicle-section">
-                <img src={seatsImg} />
-                <div>
-                    <h2>Seating</h2>
-                    <p>
-                        Ergonomic leather seats with excellent legroom for up to 4 passengers.
-                    </p>
-                </div>
+            <div className="spec-item">
+                <span>Fuel</span>
+                <strong>{fuel}</strong>
             </div>
-
-            {/* SPECS (reuse existing component) */}
-            <VehicleSpecs />
-
-        </section>
+        </div>
     );
 };
 
-export default VehicleDetails;
+export default VehicleSpecs;

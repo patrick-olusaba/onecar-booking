@@ -18,7 +18,10 @@ const VehicleShowcase: React.FC = () => {
                     <span><Star size={16} /> {vehicle.rating}.0 Rating</span>
                 </div>
             </div>
+
+
         </section>
+
     );
 };
 

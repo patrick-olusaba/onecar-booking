@@ -1,4 +1,8 @@
-export type PickupType = "airport-hotel" | "hotel-airport";
+export interface VehicleFeature {
+    title: string;
+    description: string;
+    image: string;
+}
 
 export interface Car {
     id: number;
@@ -6,8 +10,12 @@ export interface Car {
     category: string;
     seats: number;
     luggage: number;
-    price: number;
+    transmission: string;
+    fuel: string;
     image: string;
-    gallery?: string[];
-    rating?: number;
+    rating: number;
+
+    features: VehicleFeature[];
+    gallery: string[];
+
 }

@@ -257,6 +257,97 @@ a {
     font-size: 14px;
 }
 
+/* ============================= */
+/* VEHICLE DETAILS PAGE */
+/* ============================= */
+
+/* PAGE */
+/* VEHICLE DETAILS PAGE */
+
+.vehicle-details-page {
+    background: #000;
+    color: #fff;
+}
+
+/* HERO */
+.vehicle-hero {
+    height: 75vh;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.vehicle-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,.2), rgba(0,0,0,.85));
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 6vw;
+}
+
+.vehicle-hero-overlay h1 {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+}
+
+.vehicle-hero-overlay p {
+    color: var(--gold);
+    letter-spacing: .18em;
+}
+
+/* CONTENT */
+.vehicle-details-content {
+    padding: 6vw;
+    max-width: 1500px;
+    margin: auto;
+}
+
+/* FEATURES GRID */
+.vehicle-features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+    gap: 60px;
+    margin-top: 80px;
+}
+
+/* FEATURE CARD */
+.vehicle-feature-card {
+    display: grid;
+    gap: 24px;
+}
+
+.vehicle-feature-image img {
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+    border-radius: 18px;
+    box-shadow: 0 30px 60px rgba(0,0,0,.6);
+}
+
+.vehicle-feature-content h3 {
+    font-size: 1.4rem;
+}
+
+.vehicle-feature-content p {
+    color: var(--white-soft);
+    line-height: 1.6;
+}
+
+/* CTA */
+.vehicle-cta {
+    margin-top: 120px;
+    text-align: center;
+}
+
+.vehicle-book-btn {
+    padding: 18px 50px;
+    background: linear-gradient(135deg, #d4af37, #f5d76e);
+    color: #000;
+    border-radius: 40px;
+    font-weight: 600;
+}
+
 /* FEATURED BLOG */
 /* Section */
 .featured-blog {
@@ -401,7 +492,7 @@ a {
 }
 
 .booking-form {
-    width: 94%;
+    width: 100%;
     max-width: 1200px;
     margin: -3rem auto 0; /* was -4.5rem */
     padding: 1.5rem;
@@ -496,7 +587,7 @@ a {
     top: 0;
     width: 100%;
     z-index: 50;
-    padding: 28px 6vw;
+    padding: 24px 6vw;
 }
 
 .lux-header-inner {
@@ -505,45 +596,62 @@ a {
     justify-content: space-between;
 }
 
-.lux-logo {
-    font-size: 18px;
-    letter-spacing: 0.15em;
-    font-weight: 500;
+/* Logo */
+.lux-logo-img {
+    height: 100px;
+    width: auto;
+    display: block;
 }
 
-.lux-logo span {
-    color: var(--gold);
-    margin-left: 4px;
-    font-weight: 400;
-}
-
+/* Navigation */
 .lux-nav {
     display: flex;
-    gap: 36px;
     align-items: center;
+    gap: 36px;
 }
 
 .lux-nav a {
     font-size: 13px;
     letter-spacing: 0.08em;
     color: var(--white-soft);
-    transition: color 0.3s ease;
+    transition: color 0.25s ease;
 }
 
 .lux-nav a:hover {
     color: var(--white);
 }
 
+/* CTA */
 .lux-cta {
-    border: 1px solid rgba(255,255,255,0.4);
     padding: 10px 22px;
-    transition: all 0.3s ease;
+    border: 1px solid rgba(255,255,255,0.35);
+    transition: all 0.25s ease;
 }
 
 .lux-cta:hover {
     border-color: var(--gold);
     color: var(--gold);
 }
+
+/* ---------- MOBILE ---------- */
+@media (max-width: 900px) {
+    .lux-header {
+        padding: 18px 5vw;
+    }
+
+    .lux-logo-img {
+        height: 40px;
+    }
+
+    .lux-nav {
+        gap: 22px;
+    }
+
+    .lux-nav a {
+        font-size: 12px;
+    }
+}
+
 
 
 /* ---------- FOOTER ---------- */
@@ -1403,6 +1511,46 @@ a {
 }
 
 
+/*booking page from booking,tsx css*/
+.booking-page {
+    min-height: 100vh;
+    padding: 140px 6vw 80px;
+    background: radial-gradient(circle at top, #111, #000);
+}
+
+.booking-layout {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.4fr 0.8fr;
+    gap: 40px;
+    align-items: start;
+}
+
+/* Summary stays visible */
+.booking-summary {
+    position: sticky;
+    top: 120px;
+}
+
+/* Mobile */
+@media (max-width: 900px) {
+    .booking-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .booking-summary {
+        position: relative;
+        top: 0;
+    }
+}
+@media (max-width: 1024px) {
+    .booking-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+
 /* WHATSAPP FLOAT */
 
 .whatsapp-float {
@@ -1427,3 +1575,100 @@ a {
     box-shadow: 0 18px 40px rgba(0,0,0,0.6);
 }
 
+/*booking summary*/
+
+.booking-summary {
+    background: #0b0b0b;
+    border: 1px solid rgba(212,175,55,0.35);
+    border-radius: 18px;
+    padding: 1.8rem;
+    color: #fff;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+}
+
+.booking-summary h3 {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+.booking-summary ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.booking-summary li {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.8rem;
+    font-size: 0.85rem;
+    color: #b5b5b5;
+}
+
+.booking-summary li strong {
+    color: #fff;
+    font-weight: 500;
+}
+
+.summary-divider {
+    height: 1px;
+    background: rgba(255,255,255,0.08);
+    margin: 1.5rem 0;
+}
+
+.summary-price {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1rem;
+}
+
+.summary-price strong {
+    color: #d4af37;
+}
+
+.summary-cta {
+    width: 100%;
+    margin-top: 1.4rem;
+    height: 50px;
+    border-radius: 12px;
+    border: none;
+    background: linear-gradient(135deg, #d4af37, #f5d76e);
+    color: #000;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* ---------- LIGHTBOX ---------- */
+
+.lightbox-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.lightbox-image {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 14px;
+    box-shadow: 0 40px 120px rgba(0,0,0,0.8);
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 40px;
+    right: 40px;
+    background: transparent;
+    color: white;
+    font-size: 32px;
+    border: none;
+    cursor: pointer;
+}
+
+.lightbox-close:hover {
+    color: var(--gold);
+}
