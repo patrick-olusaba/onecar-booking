@@ -1,6 +1,6 @@
 import ArgyleGrand from "../assets/images/hotel/Argyle-Grand-Hotel.jpg";
 import GiraffeManorImg from "../assets/images/hotel/giraffemanor.jpg";
-import HemingwaysImg from "../assets/images/hotel/hemingways.jpg";
+import HemingwaysImg from "../assets/images/hotel/Hemingways.jpg";
 import NorfolkImg from "../assets/images/hotel/norfolk.jpg";
 import AzureHotelImg from "../assets/images/hotel/azure-hotel-nairobi.jpg";
 import CrownePlazaImg from "../assets/images/hotel/crowne-plaza.jpg";
