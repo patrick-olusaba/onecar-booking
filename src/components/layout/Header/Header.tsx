@@ -15,6 +15,7 @@ const Header = () => {
 
                 <nav className="lux-nav">
                     <Link to="/vehicle">Vehicle</Link>
+                    <Link to="/hotels">Hotels</Link>
                     <Link to="/booking">Book</Link>
                     <Link to="/blog">Blog</Link>
                     <Link to="/contact" className="lux-cta">

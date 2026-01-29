@@ -807,6 +807,15 @@ a {
         height: 220px;
     }
 }
+.gallery-modal img {
+    animation: zoomIn .35s ease;
+}
+
+@keyframes zoomIn {
+    from { transform: scale(.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
 
 /* Sticky Booking Bar */
 
@@ -912,6 +921,36 @@ a {
 
 /*hotel*/
 /* Hotels Section */
+.hotels-page {
+    padding: 7rem 0 6rem;
+    background: #000;
+}
+
+.hotels-eyebrow {
+    color: #d4af37;
+    letter-spacing: 0.25em;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.8rem;
+}
+
+.hotels-page-header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.hotels-page-header h1 {
+    font-size: clamp(2.2rem, 5vw, 3rem);
+    font-weight: 500;
+    color: #fff;
+}
+
+.hotels-page-header p {
+    color: #b5b5b5;
+    margin-top: 0.8rem;
+}
+
 .hotels-showcase {
     padding: 6rem 0;
     background: #000;
@@ -946,10 +985,11 @@ a {
 
 /* Card */
 .hotel-card {
+    position: relative;
     border: none;
     padding: 0;
     cursor: pointer;
-    border-radius: 16px;
+    border-radius: 18px;
     overflow: hidden;
     background: #000;
     transform: translateY(20px);
@@ -968,12 +1008,24 @@ a {
     transform: scale(1.06);
 }
 
+.hotel-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+            to top,
+            rgba(0,0,0,0.85),
+            rgba(0,0,0,0.15),
+            rgba(0,0,0,0.05)
+    );
+}
+
 /* Meta Overlay */
 .hotel-meta {
     position: absolute;
     bottom: 0;
     width: 100%;
-    padding: 1.25rem;
+    padding: 1.4rem;
     background: linear-gradient(
             to top,
             rgba(0, 0, 0, 0.75),
@@ -983,14 +1035,72 @@ a {
 
 .hotel-name {
     display: block;
-    color: #fff;
-    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 4px;
 }
 
 .hotel-location {
-    font-size: 0.85rem;
+    display: block;
+    font-size: 1rem;
     color: #d1d5db;
 }
+.hotel-view{
+    color: #d4af37;
+    text-decoration: none;
+    font-size: 0.9rem;
+}/* View More Wrapper */
+.hotels-viewmore {
+    text-align: center;
+    margin-top: 3.5rem;
+}
+
+/* Button Link */
+.hotels-viewmore a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+
+    padding: 0.9rem 2.4rem;
+    border-radius: 999px;
+
+    border: 1px solid rgba(212,175,55,0.6);
+    color: #d4af37;
+    text-decoration: none;
+
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+
+    transition: all 0.35s ease;
+}
+
+/* Hover */
+.hotels-viewmore a:hover {
+    background: #d4af37;
+    color: #000;
+    transform: translateY(-2px);
+}
+
+/* Subtle Glow */
+.hotels-viewmore a::after {
+    content: "";
+    width: 0;
+    height: 1px;
+    background: #000;
+    transition: width 0.3s ease;
+}
+
+
+.hotels-viewmore .arrow {
+    transition: transform 0.3s ease;
+}
+
+.hotels-viewmore a:hover .arrow {
+    transform: translateX(4px);
+}
+
+
 
 /* Entrance animation */
 @keyframes hotelFadeIn {

@@ -7,6 +7,8 @@ import WhatsAppFloat from "./components/whatsapp/WhatsAppFloat";
 
 import Home from "./pages/Home";
 import VehiclePage from "./pages/Vehicle";
+import Hotels from "./pages/Hotels.tsx";
+import HotelDetails from "./pages/HotelDetails";
 import Booking from "./pages/Booking";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
@@ -24,6 +26,8 @@ const App: React.FC = () => {
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/vehicle" element={<VehiclePage />} />
+                <Route path="/hotels" element={<Hotels />} />
+                <Route path="/hotels/:slug" element={<HotelDetails />} />
                 <Route path="/booking" element={<Booking />} />
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/blog/:slug" element={<BlogPost />} />

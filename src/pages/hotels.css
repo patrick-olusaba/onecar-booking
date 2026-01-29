@@ -1,0 +1,128 @@
+/* ===============================
+   HOTEL HERO (Luxury Style)
+================================ */
+
+.hotel-hero {
+    position: relative;
+    height: 70vh;
+    background-size: cover;
+    background-position: center;
+}
+
+.hotel-hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+            180deg,
+            rgba(0,0,0,0.35),
+            rgba(0,0,0,0.9)
+    );
+}
+
+.hotel-hero-overlay {
+    position: absolute;
+    bottom: 14%;
+    left: 6%;
+    max-width: 720px;
+    z-index: 2;
+}
+
+.hotel-hero-location {
+    color: #d4af37;
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.8rem;
+}
+
+.hotel-hero-overlay h1 {
+    font-size: clamp(2.4rem, 5vw, 3.6rem);
+    line-height: 1.15;
+    margin-bottom: 1rem;
+}
+
+.hotel-hero-desc {
+    color: #d1d5db;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+}
+
+/* CTA */
+
+.hotel-hero-cta {
+    display: inline-block;
+    padding: 14px 34px;
+    border: 1px solid #d4af37;
+    color: #d4af37;
+    text-decoration: none;
+    letter-spacing: 0.12em;
+    transition: all 0.3s ease;
+}
+
+.hotel-hero-cta:hover {
+    background: #d4af37;
+    color: #000;
+}
+
+/* ===============================
+   CONTENT WRAPPER
+================================ */
+
+.hotel-details-content {
+    width: 92%;
+    max-width: 900px;
+    margin: 4.5rem auto 0;
+    text-align: center;
+}
+
+.hotel-details-content h2 {
+    font-size: 1.8rem;
+    margin-bottom: 2.5rem;
+}
+
+/* ===============================
+   SERVICES GRID
+================================ */
+
+.hotel-services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.4rem;
+}
+
+.hotel-service-card {
+    padding: 1.4rem;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(212,175,55,0.25);
+    letter-spacing: 0.04em;
+    transition: transform 0.3s ease;
+}
+
+.hotel-service-card:hover {
+    transform: translateY(-4px);
+}
+
+/* ===============================
+   MOBILE
+================================ */
+
+@media (max-width: 900px) {
+
+    .hotel-hero {
+        height: 52vh;
+    }
+
+    .hotel-hero-overlay {
+        left: 5%;
+        right: 5%;
+        bottom: 10%;
+    }
+
+    .hotel-details-content {
+        margin-top: 3rem;
+    }
+}

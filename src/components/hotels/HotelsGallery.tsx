@@ -1,30 +1,26 @@
-import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { hotels } from "../../data/hotels";
+import React from "react";
 
 interface HotelsGalleryProps {
     onSelectHotel: (hotelName: string) => void;
 }
 
 const HotelsGallery: React.FC<HotelsGalleryProps> = ({ onSelectHotel }) => {
-    const [activeImage, setActiveImage] = useState<string | null>(null);
-
     return (
         <section className="hotels-showcase">
             <div className="hotels-header">
                 <h2>Partner Hotels</h2>
-                <p>Luxury destinations we serve across Kenya</p>
+                <p>Luxury destinations we serve</p>
             </div>
 
             <div className="hotels-grid">
-                {hotels.map((hotel, index) => (
-                    <button
+                {hotels.slice(0, 3).map((hotel) => (
+                    <Link
                         key={hotel.id}
+                        to={`/hotels/${hotel.slug}`}
                         className="hotel-card"
-                        style={{ animationDelay: `${index * 0.12}s` }}
-                        onClick={() => {
-                            onSelectHotel(hotel.name);
-                            setActiveImage(hotel.image);
-                        }}
+                        onClick={() => onSelectHotel(hotel.name)}
                     >
                         <img src={hotel.image} alt={hotel.name} />
 
@@ -32,15 +28,15 @@ const HotelsGallery: React.FC<HotelsGalleryProps> = ({ onSelectHotel }) => {
                             <span className="hotel-name">{hotel.name}</span>
                             <span className="hotel-location">{hotel.location}</span>
                         </div>
-                    </button>
+                    </Link>
                 ))}
             </div>
 
-            {activeImage && (
-                <div className="hotel-modal" onClick={() => setActiveImage(null)}>
-                    <img src={activeImage} alt="Hotel view" />
-                </div>
-            )}
+            <div className="hotels-viewmore">
+                <Link to="/hotels">
+                    View All Hotels <span className="arrow">→</span>
+                </Link>
+            </div>
         </section>
     );
 };

@@ -48,7 +48,7 @@ const Home = () => {
             <VehicleShowcase />
             <VehicleGallery />
 
-            {/* Clicking hotel auto-fills BookingForm */}
+            {/* Clicking hotels auto-fills BookingForm */}
             <HotelsGallery onSelectHotel={setHotel} />
 
             <FeaturedBlog />
