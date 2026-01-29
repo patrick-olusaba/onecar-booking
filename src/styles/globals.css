@@ -655,48 +655,122 @@ a {
 
 
 /* ---------- FOOTER ---------- */
+
 .lux-footer {
-    padding: 5vw 6vw;
-    border-top: 1px solid var(--border-light);
-    margin-top: 8vw;
+    background: #0a0a0a;
+    padding: 5rem 6vw 2rem;
+    color: #cfcfcf;
 }
 
 .lux-footer-inner {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4rem;
 }
 
 .lux-footer-logo {
-    font-size: 16px;
+    font-size: 1.3rem;
     letter-spacing: 0.15em;
 }
 
 .lux-footer-logo span {
     color: var(--gold);
-    margin-left: 4px;
 }
 
-.lux-footer-brand p {
-    margin-top: 10px;
-    color: var(--white-muted);
-    font-size: 13px;
+.lux-footer-tagline {
+    margin: 1rem 0;
+    font-size: 0.9rem;
 }
 
-.lux-footer-meta {
+.lux-footer-address,
+.lux-footer-phone {
+    font-size: 0.85rem;
+    color: #9ca3af;
+}
+
+/* Socials */
+.lux-footer-socials {
+    margin-top: 1.2rem;
     display: flex;
-    gap: 32px;
-    color: var(--white-muted);
-    font-size: 12px;
+    gap: 1rem;
 }
 
-@media (max-width: 768px) {
+.lux-footer-socials a {
+    font-size: 1.1rem;
+    color: #fff;
+    transition: color 0.3s ease;
+}
+
+.lux-footer-socials a:hover {
+    color: var(--gold);
+}
+
+/* Links */
+.lux-footer-links h4,
+.lux-footer-newsletter h4 {
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    letter-spacing: 0.08em;
+}
+
+.lux-footer-links a {
+    display: block;
+    margin-bottom: 0.6rem;
+    color: #cfcfcf;
+    font-size: 0.85rem;
+}
+
+.lux-footer-links a:hover {
+    color: var(--gold);
+}
+
+/* Newsletter */
+.lux-newsletter-form {
+    display: flex;
+    gap: 0.6rem;
+}
+
+.lux-newsletter-form input {
+    flex: 1;
+    padding: 0.6rem;
+    background: #111;
+    border: 1px solid #222;
+    color: #fff;
+}
+
+.lux-newsletter-form button {
+    padding: 0.6rem 1rem;
+    background: linear-gradient(135deg, #d4af37, #f5d76e);
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* Bottom */
+.lux-footer-bottom {
+    margin-top: 4rem;
+    border-top: 1px solid #222;
+    padding-top: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: #888;
+}
+
+/* Mobile */
+@media (max-width: 900px) {
     .lux-footer-inner {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+    }
+
+    .lux-footer-bottom {
         flex-direction: column;
-        gap: 24px;
-        align-items: flex-start;
+        gap: 0.5rem;
+        text-align: center;
     }
 }
+
 
 /* ---------- VEHICLE GALLERY ---------- */
 /* ===== Vehicle Gallery ===== */
@@ -1218,6 +1292,36 @@ a {
 .blog-card-content p {
     color: #b5b5b5;
     font-size: 0.95rem;
+}
+/* BLOG PAGINATION */
+
+.blog-pagination {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 4rem;
+}
+
+.page-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid rgba(212,175,55,0.4);
+    background: transparent;
+    color: #d4af37;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.page-btn:hover {
+    background: rgba(212,175,55,0.15);
+}
+
+.page-btn.active {
+    background: linear-gradient(135deg,#d4af37,#f5d76e);
+    color: #000;
+    border-color: transparent;
 }
 
 /* ===============================
