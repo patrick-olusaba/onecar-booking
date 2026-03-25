@@ -1,33 +1,37 @@
-import { useState, useMemo } from "react";
+import {useState, useMemo} from "react";
 import Hero from "../components/hero/Hero";
 import HeroServices from "../components/hero/HeroServices";
+import TrustStrip from "../components/trust/TrustStrip";
 import BookingForm from "../components/booking/BookingForm";
-import RouteInfoPanel from "../components/booking/RouteInfo";
+import RouteInfoPanel from "../components/booking/RouteInfoPanel.tsx";
 import StickyBookingBar from "../components/booking/StickyBookingBar";
-import VehicleShowcase from "../components/vehicle/ VehicleShowcase.tsx";
+import WhyChooseUs from "../components/why/WhyChooseUs";
+import VehicleShowcase from "../components/vehicle/ VehicleShowcase";
 import VehicleGallery from "../components/vehicle/VehicleGallery";
+import Testimonials from "../components/testimonials/Testimonials";
+import CtaBanner from "../components/cta/CtaBanner";
 import HotelsGallery from "../components/hotels/HotelsGallery";
 import FeaturedBlog from "../components/blog/FeaturedBlog";
 import { calculateRoute } from "../utils/routeCalculator";
-import type { RouteInfo } from "../utils/routeCalculator";
 
 const Home = () => {
     const [service, setService] = useState("Airport Transfer");
     const [airport, setAirport] = useState("JKIA");
+    const [distanceKm] = useState(0);
     const [hotel, setHotel] = useState("");
     const [date, setDate] = useState("");
     const [time, setTime] = useState("");
     const [passengers, setPassengers] = useState(1);
 
-    // ✅ Derived, not stored
-    const routeInfo: RouteInfo | null = useMemo(() => {
-        if (!hotel || !time) return null;
-        return calculateRoute(airport, hotel, time);
-    }, [airport, hotel, time]);
+    const routeInfo = useMemo(() => {
+        if (!hotel || !time || distanceKm <= 0) return null;
+        return calculateRoute(airport, hotel, time, distanceKm);
+    }, [airport, hotel, time, distanceKm]);
 
     return (
         <>
             <Hero />
+            <TrustStrip />
             <HeroServices />
 
             <BookingForm
@@ -43,21 +47,24 @@ const Home = () => {
                 setTime={setTime}
                 passengers={passengers}
                 setPassengers={setPassengers}
+                distanceKm={routeInfo?.distance ?? 0}
             />
+
+            <WhyChooseUs />
 
             <VehicleShowcase />
             <VehicleGallery />
 
-            {/* Clicking hotels auto-fills BookingForm */}
+            <CtaBanner />
+
+            <Testimonials />
+
             <HotelsGallery onSelectHotel={setHotel} />
 
             <FeaturedBlog />
 
             <RouteInfoPanel routeInfo={routeInfo} />
-
-            <StickyBookingBar
-                routeInfo={routeInfo}
-            />
+            <StickyBookingBar routeInfo={routeInfo} />
         </>
     );
 };

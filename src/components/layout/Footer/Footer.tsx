@@ -2,6 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const Footer: React.FC = () => {
+
+    // Change this number to your real WhatsApp business number
+    const whatsappNumber = "254700000000";
+
+    const whatsappLink = `https://wa.me/${whatsappNumber}?text=Hello%20Luxe%20Transfers,%20I%20would%20like%20to%20make%20a%20booking.`;
+
     return (
         <footer className="lux-footer">
             <div className="lux-footer-inner">
@@ -20,9 +26,15 @@ const Footer: React.FC = () => {
                         Westlands, Nairobi, Kenya
                     </p>
 
-                    <p className="lux-footer-phone">
+                    {/* Phone -> Opens WhatsApp */}
+                    <a
+                        href={whatsappLink}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="lux-footer-phone"
+                    >
                         +254 700 000 000
-                    </p>
+                    </a>
 
                     {/* Social Links */}
                     <div className="lux-footer-socials">
@@ -38,7 +50,7 @@ const Footer: React.FC = () => {
                             <i className="fab fa-x-twitter"></i>
                         </a>
 
-                        <a href="https://wa.me/254700000000" target="_blank" rel="noreferrer">
+                        <a href={whatsappLink} target="_blank" rel="noreferrer">
                             <i className="fab fa-whatsapp"></i>
                         </a>
 
@@ -51,7 +63,6 @@ const Footer: React.FC = () => {
                 {/* Quick Links */}
                 <div className="lux-footer-links">
                     <h4>Quick Links</h4>
-
                     <Link to="/">Home</Link>
                     <Link to="/vehicle">Vehicle</Link>
                     <Link to="/booking">Booking</Link>

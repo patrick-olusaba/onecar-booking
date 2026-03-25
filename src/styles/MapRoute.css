@@ -1,0 +1,75 @@
+.map-route-wrapper {
+    max-width: 900px;
+    margin: auto;
+}
+
+.map-search-box {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.search-group {
+    position: relative;
+    flex: 1;
+}
+
+.search-group input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.results-list {
+    position: absolute;
+    top: 105%;
+    width: 100%;
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 6px 12px rgba(0,0,0,.15);
+    z-index: 1000;
+}
+
+.result-item {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.result-item:hover {
+    background: #f2f2f2;
+}
+
+.map-info-panel {
+    margin-top: 12px;
+    padding: 14px;
+    background: #000;
+    color: #fff;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.route-loading {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(
+            90deg,
+            #e5e7eb 25%,
+            #f3f4f6 37%,
+            #e5e7eb 63%
+    );
+    background-size: 400% 100%;
+    animation: shimmer 1.4s ease infinite;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    z-index: 1000;
+}
+
+@keyframes shimmer {
+    0% { background-position: 100% 0; }
+    100% { background-position: -100% 0; }
+}
+

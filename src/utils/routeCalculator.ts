@@ -1,27 +1,25 @@
 export interface RouteInfo {
     route: string;
-    distance: number;
-    duration: number;
-    baseFare: number;
-    peakSurcharge: number;
+    distance: number; // km
+    duration: number; // minutes
+    price: number;    // total fare (distance only)
 }
+
+const KM_RATE = 300; // change anytime
 
 export function calculateRoute(
     airport: string,
     hotel: string,
     time: string
-): RouteInfo {
-    const distance = 18;
-    const duration = 35;
+    , distanceKm: number): RouteInfo {
 
-    const baseFare = 4500;
-    const isPeak = time >= "07:00" && time <= "09:00";
+    const duration = Math.round(distanceKm * 2); // rough estimate
+    const price = distanceKm * KM_RATE; // distance-only pricing
 
     return {
         route: `${airport} → ${hotel}`,
-        distance,
+        distance: distanceKm,
         duration,
-        baseFare,
-        peakSurcharge: isPeak ? baseFare * 0.25 : 0
+        price
     };
 }

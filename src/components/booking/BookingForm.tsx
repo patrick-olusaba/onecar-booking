@@ -18,6 +18,8 @@ interface BookingFormProps {
 
     passengers: number;
     setPassengers: (value: number) => void;
+
+    distanceKm: number;   // ✅ only distance
 }
 
 const BookingForm: React.FC<BookingFormProps> = ({
@@ -32,17 +34,19 @@ const BookingForm: React.FC<BookingFormProps> = ({
                                                      time,
                                                      setTime,
                                                      passengers,
-                                                     setPassengers
+                                                     setPassengers,
+                                                     distanceKm
                                                  }) => {
     return (
         <section className="booking-wrapper">
             <form className="booking-form">
+
                 {/* Service */}
                 <div className="booking-field">
                     <label>Service</label>
                     <select
                         value={service}
-                        onChange={e => setService(e.target.value)}
+                        onChange={(e) => setService(e.target.value)}
                     >
                         <option>Airport Transfer</option>
                         <option>Business Transfer</option>
@@ -55,7 +59,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
                     <label>From</label>
                     <select
                         value={airport}
-                        onChange={e => setAirport(e.target.value)}
+                        onChange={(e) => setAirport(e.target.value)}
                     >
                         <option value="JKIA">JKIA Airport</option>
                         <option value="Wilson">Wilson Airport</option>
@@ -69,7 +73,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
                         type="text"
                         value={hotel}
                         placeholder="Hotel or destination"
-                        onChange={e => setHotel(e.target.value)}
+                        onChange={(e) => setHotel(e.target.value)}
                     />
                 </div>
 
@@ -79,7 +83,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
                     <input
                         type="date"
                         value={date}
-                        onChange={e => setDate(e.target.value)}
+                        onChange={(e) => setDate(e.target.value)}
                     />
                 </div>
 
@@ -89,7 +93,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
                     <input
                         type="time"
                         value={time}
-                        onChange={e => setTime(e.target.value)}
+                        onChange={(e) => setTime(e.target.value)}
                     />
                 </div>
 
@@ -101,9 +105,19 @@ const BookingForm: React.FC<BookingFormProps> = ({
                         min={1}
                         max={4}
                         value={passengers}
-                        onChange={e => setPassengers(Number(e.target.value))}
+                        onChange={(e) => setPassengers(Number(e.target.value))}
                     />
                 </div>
+
+                {/* Distance Display */}
+                {distanceKm > 0 && (
+                    <div className="booking-map-summary">
+                        <p>
+                            <strong>Distance:</strong> {distanceKm.toFixed(2)} km
+                        </p>
+                    </div>
+                )}
+
             </form>
         </section>
     );
