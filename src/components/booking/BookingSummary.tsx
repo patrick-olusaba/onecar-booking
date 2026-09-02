@@ -1,4 +1,6 @@
 import React from "react";
+import { whatsappLink } from "../../config";
+import type { RouteStatus } from "../../pages/MapRoute";
 
 interface FareBreakdown {
     base: number;
@@ -18,6 +20,7 @@ interface BookingSummaryProps {
     distance: number;
     price: number;
     breakdown: FareBreakdown;
+    routeStatus?: RouteStatus;
 }
 
 const BookingSummary: React.FC<BookingSummaryProps> = ({
@@ -29,8 +32,38 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
                                                            passengers,
                                                            distance,
                                                            price,
-                                                           breakdown
+                                                           breakdown,
+                                                           routeStatus = "idle"
                                                        }) => {
+    // Everything the site sells runs through WhatsApp, so the booking does too.
+    const detailsGiven = Boolean(to && date && time);
+    const ready = detailsGiven && distance > 0;
+
+    /* If routing is down we still know the trip, just not the distance. Rather
+       than leaving the customer at a dead button, hand it over for a manual
+       quote -- without inventing a price. */
+    const quoteByHand = detailsGiven && !ready && routeStatus === "error";
+
+    const manualEnquiry = [
+        "Hello Luxe Transfers, could I get a quote for:",
+        `Service: ${service}`,
+        `From: ${from}`,
+        `To: ${to}`,
+        `Date: ${date} at ${time}`,
+        `Passengers: ${passengers}`,
+    ].join("\n");
+
+    const enquiry = [
+        "Hello Luxe Transfers, I would like to book:",
+        `Service: ${service}`,
+        `From: ${from}`,
+        `To: ${to}`,
+        `Date: ${date} at ${time}`,
+        `Passengers: ${passengers}`,
+        `Distance: ${distance.toFixed(2)} km`,
+        `Quoted total: KES ${price.toLocaleString()}`,
+    ].join("\n");
+
     return (
         <aside className="booking-summary">
             <h3>Your Trip</h3>
@@ -45,7 +78,13 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
                 <li>
                     <span>Distance</span>
                     <strong>
-                        {distance > 0 ? `${distance.toFixed(2)} km` : "Calculating..."}
+                        {distance > 0
+                            ? `${distance.toFixed(2)} km`
+                            : routeStatus === "locating" || routeStatus === "routing"
+                              ? "Calculating…"
+                              : routeStatus === "error"
+                                ? "Unavailable"
+                                : "—"}
                     </strong>
                 </li>
             </ul>
@@ -86,9 +125,29 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
                 <strong>KES {price.toLocaleString()}</strong>
             </div>
 
-            <button className="summary-cta">
-                Confirm Booking
-            </button>
+            {ready ? (
+                <a
+                    className="summary-cta"
+                    href={whatsappLink(enquiry)}
+                    target="_blank"
+                    rel="noreferrer"
+                >
+                    Confirm Booking
+                </a>
+            ) : quoteByHand ? (
+                <a
+                    className="summary-cta"
+                    href={whatsappLink(manualEnquiry)}
+                    target="_blank"
+                    rel="noreferrer"
+                >
+                    Ask us for a quote
+                </a>
+            ) : (
+                <button className="summary-cta" disabled>
+                    Enter your trip details
+                </button>
+            )}
         </aside>
     );
 };

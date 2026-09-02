@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import Header from "./components/layout/Header/Header";
 import Footer from "./components/layout/Footer/Footer";
 import WhatsAppFloat from "./components/whatsapp/WhatsAppFloat";
+import ItineraryRail from "./components/rail/ItineraryRail";
 
 import Home from "./pages/Home";
 import VehiclePage from "./pages/Vehicle";
@@ -13,12 +14,16 @@ import Booking from "./pages/Booking";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import Contact from "./pages/Contact";
+import NotFound from "./pages/NotFound";
 
 import "./styles/globals.css";
 
 const App: React.FC = () => {
     return (
         <>
+            {/* The route, drawn down the page */}
+            <ItineraryRail />
+
             {/* Shared site header */}
             <Header />
 
@@ -32,6 +37,7 @@ const App: React.FC = () => {
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/blog/:slug" element={<BlogPost />} />
                 <Route path="/contact" element={<Contact />} />
+                <Route path="*" element={<NotFound />} />
             </Routes>
 
             {/* Shared site footer */}

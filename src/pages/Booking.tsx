@@ -4,20 +4,9 @@ import { useState, useMemo } from "react";
 import BookingForm from "../components/booking/BookingForm";
 import BookingSummary from "../components/booking/BookingSummary";
 import MapRoute from "../pages/MapRoute";
+import type { RouteStatus } from "../pages/MapRoute";
 import type { RouteInfo } from "../utils/routeCalculator";
-
-/* ---------------- PRICING CONSTANTS ---------------- */
-
-const BASE_FARE = 3000;
-const PRICE_PER_KM = 150;
-const PASSENGER_FEE = 1000;
-const PEAK_MULTIPLIER = 1.25;
-
-const isPeakHour = (time: string) => {
-    if (!time) return false;
-    const hour = Number(time.split(":")[0]);
-    return (hour >= 6 && hour <= 9) || (hour >= 16 && hour <= 19);
-};
+import { calculateFare } from "../utils/pricing";
 
 /* ---------------- COMPONENT ---------------- */
 
@@ -25,58 +14,42 @@ const Booking = () => {
 
     const location = useLocation();
     const routeInfo = location.state?.routeInfo as RouteInfo | null;
+    const prefill = location.state?.prefill as Partial<{
+        service: string;
+        airport: string;
+        hotel: string;
+        date: string;
+        time: string;
+        passengers: number;
+    }> | undefined;
 
-    const [service, setService] = useState("Airport Transfer");
+    const [service, setService] = useState(prefill?.service ?? "Airport Transfer");
 
     const [airport, setAirport] = useState(
-        routeInfo?.route.split(" → ")[0] || "JKIA"
+        prefill?.airport ?? routeInfo?.route.split(" → ")[0] ?? "JKIA"
     );
 
     const [hotel, setHotel] = useState(
-        routeInfo?.route.split(" → ")[1] || ""
+        prefill?.hotel ?? routeInfo?.route.split(" → ")[1] ?? ""
     );
 
-    const [date, setDate] = useState("");
-    const [time, setTime] = useState("");
-    const [passengers, setPassengers] = useState(1);
+    const [date, setDate] = useState(prefill?.date ?? "");
+    const [time, setTime] = useState(prefill?.time ?? "");
+    const [passengers, setPassengers] = useState(prefill?.passengers ?? 1);
 
     const [distanceKm, setDistanceKm] = useState(0);
-    console.log("BOOKING DISTANCE STATE:", distanceKm);
+    const [routeStatus, setRouteStatus] = useState<RouteStatus>("idle");
 
 
     /* ---------------- LIVE PRICE ---------------- */
 
-    const fareBreakdown = useMemo(() => {
-        if (distanceKm <= 0) {
-            return {
-                base: 0,
-                distance: 0,
-                passengers: 0,
-                peak: 0,
-                total: 0,
-            };
-        }
-
-        const base = BASE_FARE;
-        const distanceFare = distanceKm * PRICE_PER_KM;
-        const passengerFare = passengers * PASSENGER_FEE;
-
-        let subtotal = base + distanceFare + passengerFare;
-
-        let peakCharge = 0;
-        if (isPeakHour(time)) {
-            peakCharge = subtotal * (PEAK_MULTIPLIER - 1);
-            subtotal += peakCharge;
-        }
-
-        return {
-            base: Math.round(base),
-            distance: Math.round(distanceFare),
-            passengers: Math.round(passengerFare),
-            peak: Math.round(peakCharge),
-            total: Math.round(subtotal),
-        };
-    }, [distanceKm, passengers, time]);
+    const fareBreakdown = useMemo(
+        () =>
+            distanceKm > 0
+                ? calculateFare(distanceKm, passengers, time)
+                : { base: 0, distance: 0, passengers: 0, peak: 0, total: 0 },
+        [distanceKm, passengers, time]
+    );
 
     const price = fareBreakdown.total;
 
@@ -115,10 +88,9 @@ const Booking = () => {
                     <MapRoute
                         key={`${airport}-${hotel}`}
                         pickupAddress={airport}
-                        setPickupAddress={setAirport}
                         destinationAddress={hotel}
-                        setDestinationAddress={setHotel}
                         setDistance={setDistanceKm}
+                        onStatus={setRouteStatus}
                     />
 
                 </div>
@@ -134,6 +106,7 @@ const Booking = () => {
                     distance={distanceKm}
                     price={price}
                     breakdown={fareBreakdown}
+                    routeStatus={routeStatus}
                 />
 
             </div>

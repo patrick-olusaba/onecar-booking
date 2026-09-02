@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
+    "check:pricing": "node --experimental-strip-types src/utils/pricing.check.ts",
     "preview": "vite preview"
   },
   "dependencies": {

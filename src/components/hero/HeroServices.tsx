@@ -1,46 +1,59 @@
 import React from "react";
-import airportImg from "../../assets/images/services/airport.jpg";
-import businessImg from "../../assets/images/services/business.jpg";
-import eventsImg from "../../assets/images/services/wedding.jpg";
+import { Link } from "react-router-dom";
 
+/* No stock photography here. The business runs one car, and a library shot of
+   somebody else's wedding limousine undercuts the whole claim -- so the
+   services are set as an index instead. (It also removed 26MB of images.) */
 const services = [
     {
-        title: "Airport Transfers",
-        description: "Punctual, discreet airport pickups and drop-offs",
-        image: airportImg,
+        name: "Airport transfer",
+        route: "JKIA / Wilson → City",
+        from: "KES 5,700",
+        description:
+            "Met at arrivals with your name, luggage loaded, flight tracked from wheels-up.",
     },
     {
-        title: "Business Transfers",
-        description: "Executive travel for meetings and corporate clients",
-        image: businessImg,
+        name: "Business hire",
+        route: "By the half day or day",
+        from: "KES 12,000",
+        description:
+            "The car and chauffeur held for your meetings, with waiting time between stops included.",
     },
     {
-        title: "Events & Weddings",
-        description: "Arrive in comfort and style for special occasions",
-        image: eventsImg,
+        name: "Events",
+        route: "Nairobi and surrounds",
+        from: "On request",
+        description:
+            "Weddings, dinners and functions where arriving on time matters more than arriving loudly.",
     },
 ];
 
 const HeroServices: React.FC = () => {
     return (
-        <section className="hero-services">
-            <div className="hero-services-inner">
-                {services.map((service, index) => (
-                    <div
-                        key={service.title}
-                        className="hero-service-card"
-                        style={{ animationDelay: `${index * 0.15}s` }}
-                    >
-                        <div
-                            className="hero-service-image"
-                            style={{ backgroundImage: `url(${service.image})` }}
-                        />
-                        <div className="hero-service-content">
-                            <h3>{service.title}</h3>
+        <section className="section services">
+            <div className="shell">
+                <div className="section-head">
+                    <span className="eyebrow eyebrow--signal">Services</span>
+                    <h2>Three ways to book the car</h2>
+                </div>
+
+                <div className="service-index">
+                    {services.map((service) => (
+                        <article key={service.name} className="service">
+                            <span className="data service-route">{service.route}</span>
+                            <h3>{service.name}</h3>
                             <p>{service.description}</p>
-                        </div>
-                    </div>
-                ))}
+                            <span className="service-from">
+                                <span className="data">From</span>
+                                <span className="service-price">{service.from}</span>
+                            </span>
+                        </article>
+                    ))}
+                </div>
+
+                <Link to="/booking" className="btn btn--quiet services-cta">
+                    Price your transfer
+                </Link>
             </div>
         </section>
     );

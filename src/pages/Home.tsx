@@ -1,4 +1,5 @@
 import {useState, useMemo} from "react";
+import { useNavigate } from "react-router-dom";
 import Hero from "../components/hero/Hero";
 import HeroServices from "../components/hero/HeroServices";
 import TrustStrip from "../components/trust/TrustStrip";
@@ -15,6 +16,7 @@ import FeaturedBlog from "../components/blog/FeaturedBlog";
 import { calculateRoute } from "../utils/routeCalculator";
 
 const Home = () => {
+    const navigate = useNavigate();
     const [service, setService] = useState("Airport Transfer");
     const [airport, setAirport] = useState("JKIA");
     const [distanceKm] = useState(0);
@@ -48,6 +50,13 @@ const Home = () => {
                 passengers={passengers}
                 setPassengers={setPassengers}
                 distanceKm={routeInfo?.distance ?? 0}
+                onSubmit={() =>
+                    navigate("/booking", {
+                        state: {
+                            prefill: { service, airport, hotel, date, time, passengers },
+                        },
+                    })
+                }
             />
 
             <WhyChooseUs />

@@ -5,12 +5,10 @@ interface Props {
     routeInfo: RouteInfo | null;
 }
 
-const KM_RATE = 300; // 👉 change later if needed
-
 const RouteInfoPanel: React.FC<Props> = ({ routeInfo }) => {
     if (!routeInfo || !Number.isFinite(routeInfo.distance)) return null;
 
-    const fare = Math.round(routeInfo.distance * KM_RATE);
+    const fare = routeInfo.price;
 
     return (
         <div className="route-info-panel">

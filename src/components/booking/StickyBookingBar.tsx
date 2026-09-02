@@ -6,8 +6,6 @@ interface StickyBookingBarProps {
     routeInfo: RouteInfo | null;
 }
 
-const KM_RATE = 300; // same rate
-
 const StickyBookingBar: React.FC<StickyBookingBarProps> = ({ routeInfo }) => {
     const [visible, setVisible] = useState(false);
     const navigate = useNavigate();
@@ -31,7 +29,7 @@ const StickyBookingBar: React.FC<StickyBookingBarProps> = ({ routeInfo }) => {
         return null;
     }
 
-    const fare = Math.round(routeInfo.distance * KM_RATE);
+    const fare = routeInfo.price;
 
 
     return (

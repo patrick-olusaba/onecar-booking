@@ -19,7 +19,10 @@ interface BookingFormProps {
     passengers: number;
     setPassengers: (value: number) => void;
 
-    distanceKm: number;   // ✅ only distance
+    distanceKm: number;
+
+    /** When set, the form renders a submit button. */
+    onSubmit?: () => void;
 }
 
 const BookingForm: React.FC<BookingFormProps> = ({
@@ -35,11 +38,18 @@ const BookingForm: React.FC<BookingFormProps> = ({
                                                      setTime,
                                                      passengers,
                                                      setPassengers,
-                                                     distanceKm
+                                                     distanceKm,
+                                                     onSubmit
                                                  }) => {
     return (
         <section className="booking-wrapper">
-            <form className="booking-form">
+            <form
+                className="booking-form"
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    onSubmit?.();
+                }}
+            >
 
                 {/* Service */}
                 <div className="booking-field">
@@ -116,6 +126,16 @@ const BookingForm: React.FC<BookingFormProps> = ({
                             <strong>Distance:</strong> {distanceKm.toFixed(2)} km
                         </p>
                     </div>
+                )}
+
+                {onSubmit && (
+                    <button
+                        type="submit"
+                        className="booking-submit"
+                        disabled={!hotel}
+                    >
+                        Get Your Quote
+                    </button>
                 )}
 
             </form>

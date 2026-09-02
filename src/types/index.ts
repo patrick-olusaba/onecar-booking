@@ -4,6 +4,12 @@ export interface VehicleFeature {
     image: string;
 }
 
+export interface GalleryShot {
+    src: string;
+    /** What the shot actually shows. Used as the caption and the alt text. */
+    caption: string;
+}
+
 export interface Car {
     id: number;
     name: string;
@@ -16,6 +22,6 @@ export interface Car {
     rating: number;
 
     features: VehicleFeature[];
-    gallery: string[];
+    gallery: GalleryShot[];
 
 }

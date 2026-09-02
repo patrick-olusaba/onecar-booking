@@ -1,37 +1,39 @@
 import React, { useState } from "react";
 import { vehicle } from "../../data/vehicle";
+import type { GalleryShot } from "../../types";
 
 const VehicleGallery: React.FC = () => {
-    const [activeImage, setActiveImage] = useState<string | null>(null);
+    const [active, setActive] = useState<GalleryShot | null>(null);
 
     if (!vehicle.gallery?.length) return null;
 
     return (
         <section className="vehicle-gallery">
             <div className="gallery-header">
-                <h2>The Vehicle</h2>
-                <p>Every detail refined for executive comfort</p>
+                <h2>The car itself</h2>
+                <p>
+                    The A-Class you will be collected in. No stock photography,
+                    no stand-ins.
+                </p>
             </div>
 
             <div className="gallery-grid">
-                {vehicle.gallery.map((img: string, index: number) => (
+                {vehicle.gallery.map((shot, index) => (
                     <button
-                        key={index}
+                        key={shot.src}
                         className="gallery-item"
-                        onClick={() => setActiveImage(img)}
+                        onClick={() => setActive(shot)}
                         style={{ animationDelay: `${index * 0.08}s` }}
                     >
-                        <img src={img} alt={`Vehicle ${index + 1}`} />
+                        <img src={shot.src} alt={shot.caption} loading="lazy" />
+                        <span className="data gallery-caption">{shot.caption}</span>
                     </button>
                 ))}
             </div>
 
-            {activeImage && (
-                <div
-                    className="gallery-modal"
-                    onClick={() => setActiveImage(null)}
-                >
-                    <img src={activeImage} alt="Vehicle large view" />
+            {active && (
+                <div className="gallery-modal" onClick={() => setActive(null)}>
+                    <img src={active.src} alt={active.caption} />
                 </div>
             )}
         </section>

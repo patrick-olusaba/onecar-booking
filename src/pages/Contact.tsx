@@ -1,15 +1,37 @@
 import { useState } from "react";
+import {
+    CONTACT_EMAIL,
+    PHONE_DISPLAY,
+    PHONE_NUMBER,
+    whatsappLink,
+} from "../config";
 
 const Contact = () => {
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [message, setMessage] = useState("");
     const [sent, setSent] = useState(false);
 
+    // ponytail: no backend on this site, so the form hands off to WhatsApp
+    // like every other CTA. Swap for a POST when there is somewhere to post to.
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        setSent(true);
 
-        setTimeout(() => {
-            setSent(false);
-        }, 4000);
+        const enquiry = `Hello Luxe Transfers,
+
+Name: ${name}
+Email: ${email}
+
+${message}`;
+
+        const opened = window.open(whatsappLink(enquiry), "_blank", "noreferrer");
+        if (!opened) return; // popup blocked -- do not claim it was sent
+
+        setSent(true);
+        setName("");
+        setEmail("");
+        setMessage("");
+        setTimeout(() => setSent(false), 6000);
     };
 
     return (
@@ -41,15 +63,15 @@ const Contact = () => {
                         <div className="contact-details">
                             <div>
                                 <span>Email</span>
-                                <a href="mailto:bookings@luxetransfers.co.ke">
-                                    bookings@luxetransfers.co.ke
+                                <a href={`mailto:${CONTACT_EMAIL}`}>
+                                    {CONTACT_EMAIL}
                                 </a>
                             </div>
 
                             <div>
                                 <span>Phone</span>
-                                <a href="tel:+254700000000">
-                                    +254 700 000 000
+                                <a href={`tel:${PHONE_NUMBER}`}>
+                                    {PHONE_DISPLAY}
                                 </a>
                             </div>
 
@@ -66,27 +88,45 @@ const Contact = () => {
                         onSubmit={handleSubmit}
                     >
                         <div className="form-group">
-                            <label>Name</label>
-                            <input type="text" required />
+                            <label htmlFor="contact-name">Name</label>
+                            <input
+                                id="contact-name"
+                                type="text"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                required
+                            />
                         </div>
 
                         <div className="form-group">
-                            <label>Email</label>
-                            <input type="email" required />
+                            <label htmlFor="contact-email">Email</label>
+                            <input
+                                id="contact-email"
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
                         </div>
 
                         <div className="form-group">
-                            <label>Message</label>
-                            <textarea rows={5} required />
+                            <label htmlFor="contact-message">Message</label>
+                            <textarea
+                                id="contact-message"
+                                rows={5}
+                                value={message}
+                                onChange={(e) => setMessage(e.target.value)}
+                                required
+                            />
                         </div>
 
                         <button type="submit">
-                            Send Message
+                            Send via WhatsApp
                         </button>
 
                         {sent && (
-                            <div className="form-success animate-success">
-                                ✓ Message sent successfully
+                            <div className="form-success animate-success" role="status">
+                                ✓ Opened in WhatsApp — press send there to reach us
                             </div>
                         )}
                     </form>

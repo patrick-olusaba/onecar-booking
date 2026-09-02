@@ -1,16 +1,10 @@
 import React from "react";
+import { whatsappLink } from "../../config";
 
 const WhatsAppFloat: React.FC = () => {
-    const whatsappNumber = "254700000000";
-    const message = "Hello Luxe Transfers, I would like to make a booking.";
-
-    const whatsappLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-        message
-    )}`;
-
     return (
         <a
-            href={whatsappLink}
+            href={whatsappLink("Hello Luxe Transfers, I would like to make a booking.")}
             target="_blank"
             rel="noreferrer"
             className="whatsapp-float"

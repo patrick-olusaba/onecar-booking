@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
     MapContainer,
     TileLayer,
@@ -39,10 +39,13 @@ interface LatLng {
 
 /* ---------------- PROPS ---------------- */
 
+export type RouteStatus = "idle" | "locating" | "routing" | "ok" | "error";
+
 interface MapRouteProps {
     pickupAddress: string;
     destinationAddress: string;
     setDistance: (km: number) => void;
+    onStatus?: (status: RouteStatus) => void;
 }
 
 /* ---------------- CONSTANTS ---------------- */
@@ -52,7 +55,17 @@ const NAIROBI_CENTER: LatLng = {
     lng: 36.817223,
 };
 
-const ORS_KEY = import.meta.env.VITE_ORS_API_KEY;
+/* Routing runs on OSRM, which needs no API key. The previous provider
+   (OpenRouteService) required one, and a revoked key meant every fare on the
+   site silently came out at zero.
+
+   ponytail: this is the public demo server -- fair use, no SLA. If traffic
+   grows, self-host OSRM or move to a keyed provider. */
+const OSRM_ROUTE_URL = "https://router.project-osrm.org/route/v1/driving";
+
+/* Nominatim allows roughly one request a second. The destination is typed,
+   so we wait for the typing to stop before asking. */
+const GEOCODE_DEBOUNCE_MS = 600;
 
 /* ---------------- FIT BOUNDS (SAFE) ---------------- */
 
@@ -79,13 +92,31 @@ const MapRoute: React.FC<MapRouteProps> = ({
                                                pickupAddress,
                                                destinationAddress,
                                                setDistance,
+                                               onStatus,
                                            }) => {
     const [pickup, setPickup] = useState<LatLng | null>(null);
     const [destination, setDestination] = useState<LatLng | null>(null);
 
     const [route, setRoute] = useState<LatLng[]>([]);
     const [animatedRoute, setAnimatedRoute] = useState<LatLng[]>([]);
-    const [loadingRoute, setLoadingRoute] = useState(false);
+    const [status, setStatus] = useState<RouteStatus>("idle");
+    const [error, setError] = useState<string | null>(null);
+
+    const report = useCallback(
+        (next: RouteStatus) => {
+            setStatus(next);
+            onStatus?.(next);
+        },
+        [onStatus]
+    );
+
+    /* A fare must never outlive the trip it was quoted for. Any change to
+       either endpoint clears the distance before we go and fetch a new one. */
+    const clearDistance = useCallback(() => {
+        setDistance(0);
+        setRoute([]);
+        setAnimatedRoute([]);
+    }, [setDistance]);
 
     /* ---------------- GEOCODING ---------------- */
 
@@ -109,41 +140,92 @@ const MapRoute: React.FC<MapRouteProps> = ({
     };
 
     useEffect(() => {
-        if (pickupAddress.length > 3) {
-            geocodeAddress(pickupAddress).then(setPickup);
-        } else {
-            setPickup(null);
-        }
-    }, [pickupAddress]);
+        clearDistance();
 
-    useEffect(() => {
-        if (destinationAddress.length > 3) {
-            geocodeAddress(destinationAddress).then(setDestination);
-        } else {
-            setDestination(null);
+        if (pickupAddress.length <= 3) {
+            setPickup(null);
+            return;
         }
-    }, [destinationAddress]);
+
+        report("locating");
+        const timer = setTimeout(() => {
+            geocodeAddress(pickupAddress).then((point) => {
+                setPickup(point);
+                if (!point) {
+                    setError(`We could not find "${pickupAddress}".`);
+                    report("error");
+                }
+            });
+        }, GEOCODE_DEBOUNCE_MS);
+
+        return () => clearTimeout(timer);
+    }, [pickupAddress, clearDistance, report]);
+
+    /* The destination is a free-text field, so without a debounce this fired
+       a geocode request on every keystroke -- which breaks Nominatim's usage
+       policy and gets the site rate-limited. */
+    useEffect(() => {
+        clearDistance();
+
+        if (destinationAddress.length <= 3) {
+            setDestination(null);
+            setError(null);
+            report("idle");
+            return;
+        }
+
+        report("locating");
+        const timer = setTimeout(() => {
+            geocodeAddress(destinationAddress).then((point) => {
+                setDestination(point);
+                if (!point) {
+                    setError(`We could not find "${destinationAddress}". Try adding the area, e.g. "Sarova Panafric, Nairobi".`);
+                    report("error");
+                }
+            });
+        }, GEOCODE_DEBOUNCE_MS);
+
+        return () => clearTimeout(timer);
+    }, [destinationAddress, clearDistance, report]);
 
     /* ---------------- ROUTE FETCH ---------------- */
 
     useEffect(() => {
-        if (!pickup || !destination || !ORS_KEY) return;
+        if (!pickup || !destination) return;
+
+        let cancelled = false;
 
         const fetchRoute = async () => {
-            setLoadingRoute(true);
+            report("routing");
+            setError(null);
 
             try {
                 const res = await fetch(
-                    `https://api.openrouteservice.org/v2/directions/driving-car?start=${pickup.lng},${pickup.lat}&end=${destination.lng},${destination.lat}`,
-                    { headers: { Authorization: ORS_KEY } }
+                    `${OSRM_ROUTE_URL}/${pickup.lng},${pickup.lat};${destination.lng},${destination.lat}?overview=full&geometries=geojson`
                 );
 
-                if (!res.ok) return;
+                /* Every one of these used to be a bare `return`, so a failing
+                   router looked exactly like a route still being calculated. */
+                if (!res.ok) {
+                    console.error("Routing request failed", res.status, res.statusText);
+                    throw new Error(
+                        "We could not price this route automatically. Send us the trip and we will quote it."
+                    );
+                }
 
                 const data = await res.json();
-                const coords = data.features?.[0]?.geometry?.coordinates;
+                const best = data.routes?.[0];
+                const coords = best?.geometry?.coordinates;
+                const meters = best?.distance;
 
-                if (!coords || coords.length < 2) return;
+                if (
+                    data.code !== "Ok" ||
+                    !coords ||
+                    coords.length < 2 ||
+                    typeof meters !== "number"
+                ) {
+                    throw new Error("No driving route between those two points.");
+                }
 
                 const cleanCoords: LatLng[] = coords
                     .map(([lng, lat]: number[]) =>
@@ -151,22 +233,34 @@ const MapRoute: React.FC<MapRouteProps> = ({
                     )
                     .filter(Boolean) as LatLng[];
 
-                if (cleanCoords.length < 2) return;
+                if (cleanCoords.length < 2) {
+                    throw new Error("No driving route between those two points.");
+                }
 
-                const meters =
-                    data.features[0].properties.summary.distance;
+                if (cancelled) return;
 
                 setDistance(Number((meters / 1000).toFixed(2)));
-
                 setRoute(cleanCoords);
                 setAnimatedRoute([]);
-            } finally {
-                setLoadingRoute(false);
+                report("ok");
+            } catch (err) {
+                if (cancelled) return;
+                /* Fail with a zero fare, never a stale one. */
+                setDistance(0);
+                setRoute([]);
+                setError(
+                    err instanceof Error ? err.message : "Could not calculate the route."
+                );
+                report("error");
             }
         };
 
         fetchRoute();
-    }, [pickup, destination, setDistance]);
+
+        return () => {
+            cancelled = true;
+        };
+    }, [pickup, destination, setDistance, report]);
 
     /* ---------------- ANIMATED DRAW ---------------- */
 
@@ -197,9 +291,17 @@ const MapRoute: React.FC<MapRouteProps> = ({
 
     return (
         <div className="map-route-wrapper">
-            {loadingRoute && (
-                <div className="route-loading">
-                    Calculating best route…
+            {(status === "locating" || status === "routing") && (
+                <div className="route-loading" role="status">
+                    {status === "locating"
+                        ? "Finding that address…"
+                        : "Calculating the driving route…"}
+                </div>
+            )}
+
+            {status === "error" && error && (
+                <div className="route-error" role="alert">
+                    {error}
                 </div>
             )}
 

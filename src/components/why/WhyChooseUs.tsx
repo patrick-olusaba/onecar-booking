@@ -1,46 +1,52 @@
 import React from "react";
-import { MapPin, BadgeCheck, Headphones } from "lucide-react";
 
-const pillars = [
+/* Read as a specification, not as three marketing cards. Each row states the
+   term on the left and what it actually means on the right. */
+const terms = [
     {
-        icon: <MapPin size={28} />,
-        title: "Always On Time",
+        term: "Arrival",
+        title: "We meet the flight, not the clock",
         description:
-            "We track your flight in real time and adjust pickup times automatically — no waiting, no stress.",
+            "Give us your flight number and we track it. Land early and the car is early; sit on the tarmac an hour and the car waits. Waiting time on airport pickups is included.",
     },
     {
-        icon: <BadgeCheck size={28} />,
-        title: "Fixed, Honest Pricing",
+        term: "Fare",
+        title: "Quoted once, in writing",
         description:
-            "No surge pricing, no hidden fees. The price you see is the price you pay, every single time.",
+            "The price is set by the distance you are travelling and agreed before you book. It does not move for traffic, for rain, or for the hour you happen to land.",
     },
     {
-        icon: <Headphones size={28} />,
-        title: "24/7 Support",
+        term: "Driver",
+        title: "The same chauffeur, every time",
         description:
-            "Our team is reachable around the clock via WhatsApp or phone — before, during, and after your transfer.",
+            "One car means one driver. You get their name and number the moment the booking is confirmed, and they are reachable before, during and after the transfer.",
     },
 ];
 
 const WhyChooseUs: React.FC = () => {
     return (
-        <section className="why-section">
-            <div className="why-inner">
-                <div className="why-header">
-                    <span className="why-eyebrow">Why Luxe Transfers</span>
-                    <h2>The Standard You Deserve</h2>
-                    <p>Executive travel shouldn't come with uncertainty. Here's what sets us apart.</p>
+        <section className="section why-section">
+            <div className="shell">
+                <div className="section-head">
+                    <span className="eyebrow eyebrow--signal">Terms of service</span>
+                    <h2>What you are actually buying</h2>
+                    <p>
+                        Three things separate a booked transfer from a taxi at
+                        the kerb. These are ours, in plain terms.
+                    </p>
                 </div>
 
-                <div className="why-grid">
-                    {pillars.map((pillar, i) => (
-                        <div key={i} className="why-card">
-                            <div className="why-card-icon">{pillar.icon}</div>
-                            <h3>{pillar.title}</h3>
-                            <p>{pillar.description}</p>
+                <dl className="spec-list">
+                    {terms.map((item) => (
+                        <div key={item.term} className="spec-row">
+                            <dt className="data spec-term">{item.term}</dt>
+                            <dd className="spec-body">
+                                <h3>{item.title}</h3>
+                                <p>{item.description}</p>
+                            </dd>
                         </div>
                     ))}
-                </div>
+                </dl>
             </div>
         </section>
     );

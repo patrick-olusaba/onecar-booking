@@ -1,12 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import {
+    whatsappLink as buildWhatsappLink,
+    mailtoLink,
+    PHONE_DISPLAY,
+} from "../../../config";
 
 const Footer: React.FC = () => {
+    const [subscriber, setSubscriber] = useState("");
+    const [subscribed, setSubscribed] = useState(false);
 
-    // Change this number to your real WhatsApp business number
-    const whatsappNumber = "254700000000";
+    // ponytail: no mailing-list provider wired up, so this hands the address to
+    // the inbox instead of pretending to subscribe. Swap for the ESP's API later.
+    const handleSubscribe = (e: React.FormEvent) => {
+        e.preventDefault();
+        window.location.href = mailtoLink(
+            "Newsletter signup",
+            `Please add ${subscriber} to the Luxe Transfers newsletter.`
+        );
+        setSubscribed(true);
+        setSubscriber("");
+    };
 
-    const whatsappLink = `https://wa.me/${whatsappNumber}?text=Hello%20Luxe%20Transfers,%20I%20would%20like%20to%20make%20a%20booking.`;
+
+    const whatsappLink = buildWhatsappLink("Hello Luxe Transfers, I would like to make a booking.");
 
     return (
         <footer className="lux-footer">
@@ -33,7 +50,7 @@ const Footer: React.FC = () => {
                         rel="noreferrer"
                         className="lux-footer-phone"
                     >
-                        +254 700 000 000
+                        {PHONE_DISPLAY}
                     </a>
 
                     {/* Social Links */}
@@ -75,16 +92,31 @@ const Footer: React.FC = () => {
                     <h4>Newsletter</h4>
                     <p>Subscribe for luxury travel insights & offers</p>
 
-                    <form className="lux-newsletter-form">
+                    <form
+                        className="lux-newsletter-form"
+                        onSubmit={handleSubscribe}
+                    >
+                        <label className="sr-only" htmlFor="newsletter-email">
+                            Your email address
+                        </label>
                         <input
+                            id="newsletter-email"
                             type="email"
                             placeholder="Your email address"
+                            value={subscriber}
+                            onChange={(e) => setSubscriber(e.target.value)}
                             required
                         />
                         <button type="submit">
                             Subscribe
                         </button>
                     </form>
+
+                    {subscribed && (
+                        <p className="lux-newsletter-note" role="status">
+                            Check your mail app to confirm — we'll add you by hand.
+                        </p>
+                    )}
                 </div>
 
             </div>

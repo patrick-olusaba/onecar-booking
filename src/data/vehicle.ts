@@ -13,17 +13,29 @@ export const vehicle: Car = {
 
     image: "/images/car/hero.jpeg",
 
+    /* Four angles, each showing something the others do not. The previous
+       nine were all the same white car in the same garage -- and img1 and
+       img4 each appeared twice. Nothing was deleted: the other shots are
+       still in public/images/car and are used by `features` below. */
     gallery: [
-        "/images/car/img1.jpeg",
-        "/images/car/img2.jpeg",
-        "/images/car/img4.jpeg",
-        "/images/car/img5.jpeg",
-        "/images/car/img6.jpeg",
-        "/images/car/img7.jpeg",
-        "/images/car/img1.jpeg",
-        "/images/car/img3.jpeg",
-        "/images/car/img4.jpeg",
+        {
+            src: "/images/car/img1.jpeg",
+            caption: "The car, as it arrives",
+        },
+        {
+            src: "/images/car/backview.jpeg",
+            caption: "Your view from the back seat",
+        },
+        {
+            src: "/images/car/seat1.jpeg",
+            caption: "Rear seating and legroom",
+        },
+        {
+            src: "/images/car/dashboard1.jpeg",
+            caption: "The chauffeur's position",
+        },
     ],
+
 
     features: [
         {
@@ -45,9 +57,9 @@ export const vehicle: Car = {
             image: "/images/car/seat2.jpeg",
         },
         {
-            title: "Exterior Design",
+            title: "Centre Console",
             description:
-                "Sleek aerodynamic profile with signature Mercedes-Benz styling.",
+                "Infotainment screen, air vents and media controls within easy reach.",
             image: "/images/car/dashboard2.jpeg",
         },
         {
@@ -63,15 +75,15 @@ export const vehicle: Car = {
             image: "/images/car/steering1.jpeg",
         },
         {
-            title: "Front View",
+            title: "Dashboard, Passenger Side",
             description:
-                "Bold front fascia with LED headlights and sporty presence.",
+                "Soft-touch dash and vents on the passenger side of the cabin.",
             image: "/images/car/dashboardside.jpeg",
         },
         {
-            title: "Rear View",
+            title: "Doors and Entry",
             description:
-                "Clean rear styling with elegant tail lights.",
+                "Wide-opening doors for easy entry with luggage in hand.",
             image: "/images/car/door.jpeg",
         }
     ]
